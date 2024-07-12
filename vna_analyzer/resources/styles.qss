@@ -1,0 +1,41 @@
+QMainWindow {
+    background-color: #f0f0f0;
+}
+
+QPushButton {
+    background-color: #0078D7;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+QPushButton:hover {
+    background-color: #0053a4;
+}
+
+QPushButton:pressed {
+    background-color: #00397b;
+}
+
+QPushButton:disabled {
+    background-color: #a0a0a0;
+}
+
+QLabel {
+    color: #333;
+    font-size: 14px;
+}
+
+QCheckBox {
+    spacing: 5px; /* Espacement entre le texte et la case à cocher */
+}
+
+QCheckBox::indicator {
+    width: 18px; /* Largeur de la boîte à cocher */
+    height: 18px; /* Hauteur de la boîte à cocher */
+}
+
+QTreeWidget {
+    width: 200px;
+}
