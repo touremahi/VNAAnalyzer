@@ -16,7 +16,7 @@ def load_network(filename):
 
     if filename.endswith('.s2p'):
         return rf.Network(filename, name=name)
-    elif filename.endswith('.csv'):
+    elif filename.endswith('.dat'):
         df = pd.read_csv(filename, sep=r"\s+", decimal=',', header=None)
 
         df.columns = [
@@ -52,3 +52,23 @@ def contains_number(string):
         bool: True if the string contains a number, False otherwise.
     """
     return bool(re.search(r'\d', string))
+
+def network_ydb_min(network):
+    """
+    Calculates the minimum value of the Y-axis in dB for a given network.
+
+    Args:
+        network (Network): The network to calculate the minimum value of the Y-axis in dB for.
+
+    Returns:
+        float: The minimum value of the Y-axis in dB for the given network.
+    """
+    s11 = network.s[:, 0, 0]
+    s22 = network.s[:, 1, 1]
+    min_relected = 10*np.log10(np.min([np.min(np.abs(s11)), np.min(np.abs(s22))]))
+
+    s21 = network.s[:, 1, 0]
+    s12 = network.s[:, 1, 0]
+    min_transmitted = 10*np.log10(np.min([np.min(np.abs(s21)), np.min(np.abs(s12))]))
+
+    return min_relected, min_transmitted

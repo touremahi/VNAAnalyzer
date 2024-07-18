@@ -1,12 +1,17 @@
 
 # VNAAnalyzer
 
+![scikit-rf_logo](images/splash.webp)
+
 VNAAnalyzer est une application pour charger, visualiser et exporter des fichiers `.s2p` à l'aide d'un analyseur de réseaux vectoriels (VNA).
 
 ## Structure du Projet
 
 ```
 VNAAnalyzer/
+├── images/
+│   ├── splash.webp
+│   ├── VNAAnalyzer.ico
 ├── vna_analyzer/
 │   ├── __init__.py
 │   ├── main.py
@@ -14,6 +19,7 @@ VNAAnalyzer/
 │   ├── logic.py
 │   ├── resources/
 │   │   └── styles.qss
+│   |   └── VNAAnalyzer.ico
 │   └── tests/
 │       ├── __init__.py
 │       ├── test_logic.py

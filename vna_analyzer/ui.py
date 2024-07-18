@@ -8,7 +8,7 @@ import logging
 import sys
 
 from PySide6.QtCore import Qt, QSize
-from PySide6.QtGui import QKeySequence, QShortcut
+from PySide6.QtGui import QKeySequence, QShortcut, QIcon
 from PySide6.QtWidgets import (
     QMainWindow, QVBoxLayout, QPushButton,
     QFileDialog, QListWidget, QListWidgetItem,
@@ -90,14 +90,20 @@ class VNAAnalyzerApp(QMainWindow):
         Applies a custom stylesheet to the main window of the VNA Analyzer application.
         The stylesheet is loaded from a file named 'styles.qss'
         """
-        if hasattr(sys, '_MEIPASS'):
-            # pylint: disable=protected-access
-            qss_file = os.path.join(sys._MEIPASS, 'vna_analyzer', 'resources', 'styles.qss')
-        else:
-            qss_file = os.path.join(os.path.dirname(__file__), 'resources', 'styles.qss')
+        try:
+            self.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), 'resources', 'VNAAnalyzer.ico')))
+            if hasattr(sys, '_MEIPASS'):
+                # pylint: disable=protected-access
+                qss_file = os.path.join(sys._MEIPASS, 'vna_analyzer', 'resources', 'styles.qss')
+            else:
+                qss_file = os.path.join(os.path.dirname(__file__), 'resources', 'styles.qss')
 
-        with open(qss_file, 'r', encoding='utf-8') as file:
-            self.setStyleSheet(file.read())
+            with open(qss_file, 'r', encoding='utf-8') as file:
+                self.setStyleSheet(file.read())
+        except FileNotFoundError:
+            logging.error("Impossible de charger le fichier de styles.")
+            QMessageBox.critical(self, "Erreur", "Impossible de charger le fichier de styles.")
+            self.setStyleSheet("")
 
     def setup_connections(self):
         """
@@ -189,20 +195,27 @@ class VNAAnalyzerApp(QMainWindow):
         """
         self.__clear_axes()
         # S11_S22_dB
+        # self.axes[0][0].set_title('S11 & S22 (dB)')
         self.network.plot_s_db(m=0,n=0,ax=self.axes[0][0])
         self.network.plot_s_db(m=1,n=1,ax=self.axes[0][0])
 
         # S11_S22_phase
+        # self.axes[0][1].set_title('S11 & S22 (deg)')
         self.network.plot_s_deg(m=0,n=0,ax=self.axes[0][1])
         self.network.plot_s_deg(m=1,n=1,ax=self.axes[0][1])
 
         # S21_S12_dB
+        # self.axes[1][0].set_title('S21 & S12 (dB)')
         self.network.plot_s_db(m=1,n=0,ax=self.axes[1][0])
         self.network.plot_s_db(m=0,n=1,ax=self.axes[1][0])
 
         # S21_S12_phase
+        # self.axes[1][1].set_title('S21 & S12 (deg)')
         self.network.plot_s_deg(m=1,n=0,ax=self.axes[1][1])
         self.network.plot_s_deg(m=0,n=1,ax=self.axes[1][1])
+
+        self.axes[0][0].set_ylim(top=1)
+        self.axes[1][0].set_ylim(top=1)
 
         self.canvas.draw()
 
