@@ -17,6 +17,7 @@ from matplotlib.backends.backend_qt5agg import (
     FigureCanvasQTAgg as FigureCanvas,
     NavigationToolbar2QT as NavigationToolbar)
 import matplotlib.pyplot as plt
+
 from vna_analyzer.logic import load_network
 
 # Configure logging
@@ -114,9 +115,12 @@ class VNAAnalyzerApp(QMainWindow):
         """
         If an error occurs a critical error message is displayed to the user.
         """
+        file_filter = "S2P Touchstone (*.s2p);;DAT Files (*.dat);;All Files (*)"
+        selected_filter = "S2P Touchstone (*.s2p)"
         options = QFileDialog.Options()
-        filepath, _ = QFileDialog.getOpenFileName(self, "Sélectionnez un fichier .dat", "",
-                                                  "DAT Files (*.dat);;All Files (*)",
+        filepath, _ = QFileDialog.getOpenFileName(self, "Sélectionnez un fichier", "",
+                                                  file_filter,
+                                                  selected_filter,
                                                   options=options)
         if filepath:
             self.load_data(filepath)
